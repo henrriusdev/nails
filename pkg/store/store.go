@@ -2,19 +2,32 @@ package store
 
 import (
 	"fmt"
+	"log"
 
-	"github.com/lib/pq"
+	"github.com/jmoiron/sqlx"
 
 	"github.com/henrriusdev/nails/config"
+
+	_ "modernc.org/sqlite"
 )
 
 func NewConnection(cfg config.EnvVar) (Queryable, error) {
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		cfg.DBHost, cfg.DBPort, cfg.DBUser, cfg.DBPass, cfg.DBName, cfg.DBSSLMode)
+	// Definir la ruta de la base de datos SQLite (archivo)
+	dsn := fmt.Sprintf("%s.db", cfg.DBName)
 
-	if err := connection.Ping(); err != nil {
-		log.Error().Stack().Err(err).Msg("failed to ping db")
+	// Abrir conexión con sqlx
+	connection, err := sqlx.Open("sqlite", dsn)
+	if err != nil {
+		log.Fatalf("Error al conectar con SQLite: %v", err)
+		return nil, err
 	}
 
+	// Probar la conexión
+	if err := connection.Ping(); err != nil {
+		log.Fatalf("Error al hacer ping a la base de datos: %v", err)
+		return nil, err
+	}
+
+	fmt.Println("Conexión exitosa a SQLite")
 	return connection, nil
 }
