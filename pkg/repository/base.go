@@ -84,3 +84,21 @@ func (b *Base[T]) UpdateOne(ctx context.Context, model T, returning, count strin
 
 	return updated[0], nil
 }
+
+func (b *Base[T]) InsertOne(ctx context.Context, model T, returning, count string, upsert bool, onConflict ...string) (T, error) {
+	var query *postgrest.FilterBuilder
+	if upsert {
+		query = b.Client.From(b.Table).Insert(model, true, onConflict[0], returning, count)
+	} else {
+		query = b.Client.From(b.Table).Insert(model, false, "", returning, count)
+	}
+
+	var inserted []T
+	_, err := query.ExecuteTo(&inserted)
+	if err != nil {
+		return *new(T), err
+	}
+
+	return inserted[0], nil
+}
+

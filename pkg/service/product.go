@@ -16,5 +16,5 @@ func NewProduct(repo *repository.Product) *Product {
 }
 
 func (s *Product) Create(ctx context.Context, p model.Product) (model.Product, error) {
-	return s.repo.InsertOne(ctx, p)
+	return s.repo.InsertOne(ctx, p, "", "", false)
 }

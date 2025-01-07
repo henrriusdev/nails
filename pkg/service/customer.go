@@ -16,5 +16,5 @@ func NewCustomer(repo *repository.Customer) *Customer {
 }
 
 func (s *Customer) Create(ctx context.Context, c model.Customer) (model.Customer, error) {
-	return s.repo.InsertOne(ctx, c)
+	return s.repo.InsertOne(ctx, c, "", "", false)
 }

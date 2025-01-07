@@ -16,5 +16,5 @@ func NewUser(repo *repository.User) *User {
 }
 
 func (s *User) Create(ctx context.Context, u model.User) (model.User, error) {
-	return s.repo.InsertOne(ctx, u)
+	return s.repo.InsertOne(ctx, u, "", "", false)
 }
