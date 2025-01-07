@@ -10,7 +10,8 @@ import (
 )
 
 type EnvVar struct {
-	DBName string `env:"DB_NAME" envDefault:"db"`
+	SupabaseURL string `env:"SUPABASE_URL"`
+	SupabaseKey string `env:"SUPABASE_KEY"`
 }
 
 var Env EnvVar

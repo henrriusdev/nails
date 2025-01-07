@@ -16,5 +16,5 @@ func NewRole(repo *repository.Role) *Role {
 }
 
 func (s *Role) Create(ctx context.Context, r model.Role) (model.Role, error) {
-	return s.repo.InsertOne(ctx, r)
+	return s.repo.InsertOne(ctx, r, "", "", false)
 }

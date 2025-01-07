@@ -16,5 +16,5 @@ func NewAppointment(repo *repository.Appointment) *Appointment {
 }
 
 func (s *Appointment) Create(ctx context.Context, a model.Appointment) (model.Appointment, error) {
-	return s.repo.InsertOne(ctx, a)
+	return s.repo.InsertOne(ctx, a, "", "", false)
 }

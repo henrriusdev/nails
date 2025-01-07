@@ -1,33 +1,20 @@
 package store
 
 import (
-	"fmt"
 	"log"
 
-	"github.com/jmoiron/sqlx"
-
 	"github.com/henrriusdev/nails/config"
-
-	_ "modernc.org/sqlite"
+	"github.com/supabase-community/postgrest-go"
 )
 
-func NewConnection(cfg config.EnvVar) (Queryable, error) {
-	// Definir la ruta de la base de datos SQLite (archivo)
-	dsn := fmt.Sprintf("%s.db", cfg.DBName)
-
-	// Abrir conexión con sqlx
-	connection, err := sqlx.Open("sqlite", dsn)
-	if err != nil {
-		log.Fatalf("Error al conectar con SQLite: %v", err)
-		return nil, err
+func NewConnection(cfg config.EnvVar) (*postgrest.Client, error) {
+	// Create a new Supabase client
+	client := postgrest.NewClient(cfg.SupabaseURL, "", nil)
+	if client.ClientError != nil {
+		log.Fatalf("Failed to create a new Supabase client: %v", client.ClientError)
+		return nil, client.ClientError
 	}
 
-	// Probar la conexión
-	if err := connection.Ping(); err != nil {
-		log.Fatalf("Error al hacer ping a la base de datos: %v", err)
-		return nil, err
-	}
-
-	fmt.Println("Conexión exitosa a SQLite")
-	return connection, nil
+	log.Println("Successfully connected to Supabase")
+	return client, nil
 }

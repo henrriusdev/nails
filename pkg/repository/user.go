@@ -2,18 +2,18 @@ package repository
 
 import (
 	"github.com/henrriusdev/nails/pkg/model"
-	"github.com/henrriusdev/nails/pkg/store"
+	"github.com/supabase-community/postgrest-go"
 )
 
 type User struct {
 	Base[model.User]
 }
 
-func NewUser(db store.Queryable) *User {
+func NewUser(client *postgrest.Client) *User {
 	return &User{
 		Base: Base[model.User]{
-			Table: "users",
-			DB:    db,
+			Table:  "users",
+			Client: client,
 		},
 	}
 }
